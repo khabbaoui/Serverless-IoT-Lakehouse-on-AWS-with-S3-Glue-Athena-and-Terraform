@@ -3,3 +3,4 @@
 *.tfstate.backup
 *.tfvars
 .env
+awscliv2.zip
