@@ -113,6 +113,8 @@ Real-time ingestion using Kinesis
 Data Mesh architecture
 CI/CD pipeline for automated deployment
 Advanced monitoring and alerting
+
+
 💼 Resume Description
 
 Built a serverless IoT data lakehouse on AWS using Terraform, S3, Glue, and Athena. Designed a multi-layer architecture, implemented ETL pipelines in Python to transform raw JSON into partitioned Parquet datasets, and enabled scalable, cost-efficient analytics.
