@@ -1,7 +1,3 @@
-
-For a cleaner “professional” architecture section, paste this:
-
-```markdown
 ## Architecture
 
 ```mermaid
