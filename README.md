@@ -62,7 +62,11 @@ FROM iot_lakehouse_db.device_health_parquet
 WHERE device_type = 'industrial_sensor'
 AND year = 2026
 AND month = '04';
+
+
+
 ⚙️ Infrastructure as Code
+
 
 All infrastructure is provisioned using Terraform:
 
