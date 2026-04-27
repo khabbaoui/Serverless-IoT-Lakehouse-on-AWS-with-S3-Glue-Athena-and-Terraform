@@ -1,3 +1,4 @@
+
 ****** Serverless IoT Lakehouse on AWS  ******
 
 
@@ -195,3 +196,5 @@ Simplicity
 Automation
 
 to create a modern data solution on AWS.
+
+<img width="2834" height="2206" alt="mermaid-diagram" src="https://github.com/user-attachments/assets/24f6c9a0-6fb8-41fb-bbfa-084a66c90bf3" />
