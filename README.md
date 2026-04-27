@@ -1,4 +1,6 @@
 🚀 Serverless IoT Lakehouse on AWS
+
+
 📌 Overview
 
 This project implements a serverless data lakehouse architecture on AWS using Terraform and Python.
@@ -6,6 +8,8 @@ This project implements a serverless data lakehouse architecture on AWS using Te
 It demonstrates how to design and deploy a scalable, cost-efficient, and cloud-native data platform that ingests, transforms, and analyzes IoT-like data.
 
 Data Ingestion → Data Lake (S3) → ETL Processing → Curated Data (Parquet) → SQL Analytics (Athena)
+
+
 🧠 Architecture Approach
 
 The solution follows a serverless architecture pattern, eliminating the need for infrastructure management while ensuring scalability and cost efficiency.
@@ -16,6 +20,8 @@ AWS Glue provides schema management and metadata catalog
 Amazon Athena enables serverless SQL analytics
 Terraform ensures reproducible and automated infrastructure deployment
 Python ETL handles data transformation and business logic
+
+
 🧱 Data Lakehouse Layers
 🔹 Raw Layer
 Stores incoming JSON data
@@ -31,6 +37,8 @@ device_type
 year
 month
 day
+
+
 🔄 ETL Pipeline
 
 The ETL pipeline transforms raw data into optimized analytical datasets:
@@ -41,6 +49,8 @@ Data validation
 Temperature classification
 Battery status detection
 Maintenance risk scoring
+
+
 📊 Analytics
 
 Amazon Athena is used to query the data directly from S3:
@@ -64,11 +74,15 @@ This ensures:
 Reproducibility
 Version control
 Automated deployments
+
+
 🔐 Security Considerations
 S3 bucket is private by default
 IAM roles follow least privilege principles
 Data access is controlled through AWS policies
 Architecture can be extended with VPC endpoints for private access
+
+
 💰 Cost Optimization
 
 The architecture is designed to minimize cost:
@@ -82,6 +96,8 @@ Amazon S3 provides virtually unlimited storage
 Athena scales automatically with query demand
 Serverless services ensure high availability
 Data is durably stored across multiple AZs
+
+
 🌐 Networking (Future Enhancement)
 
 While not required for serverless services, the architecture can be extended with:
@@ -89,6 +105,8 @@ While not required for serverless services, the architecture can be extended wit
 VPC with private subnets
 S3 VPC endpoints
 Secure data processing environments
+
+
 🔮 Future Improvements
 Apache Iceberg (ACID transactions & time travel)
 Real-time ingestion using Kinesis
@@ -98,6 +116,8 @@ Advanced monitoring and alerting
 💼 Resume Description
 
 Built a serverless IoT data lakehouse on AWS using Terraform, S3, Glue, and Athena. Designed a multi-layer architecture, implemented ETL pipelines in Python to transform raw JSON into partitioned Parquet datasets, and enabled scalable, cost-efficient analytics.
+
+
 
 🏁 Conclusion
 
