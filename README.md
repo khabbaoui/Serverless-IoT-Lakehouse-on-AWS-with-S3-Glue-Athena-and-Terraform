@@ -1,187 +1,197 @@
-🚀 Serverless IoT Lakehouse on AWS
+****** Serverless IoT Lakehouse on AWS  ******
 
 
-📌 Overview
+**** Project Overview
 
-This project implements a serverless data lakehouse architecture on AWS using Terraform and Python.
+In this project, I designed and implemented a serverless data lakehouse architecture on AWS using Terraform and Python.
 
-It demonstrates how to design and deploy a scalable, cost-efficient, and cloud-native data platform that ingests, transforms, and analyzes IoT-like data.
+The goal was to simulate a real-world IoT data platform capable of:
 
-Data Ingestion → Data Lake (S3) → ETL Processing → Curated Data (Parquet) → SQL Analytics (Athena)
+Ingesting raw data
+Storing it in a scalable data lake
+Transforming it into optimized formats
+Enabling efficient SQL-based analytics
 
-
-🧠 Architecture Approach
-
-The solution follows a serverless architecture pattern, eliminating the need for infrastructure management while ensuring scalability and cost efficiency.
-
-Key Design Decisions
-Amazon S3 is used as the data lake due to its durability and scalability
-AWS Glue provides schema management and metadata catalog
-Amazon Athena enables serverless SQL analytics
-Terraform ensures reproducible and automated infrastructure deployment
-Python ETL handles data transformation and business logic
+I focused on building a solution that is scalable, cost-efficient, and aligned with AWS best practices.
 
 
-🧱 Data Lakehouse Layers
+**** Architecture Design
+
+I followed a serverless architecture approach, which means I avoided managing infrastructure (like EC2) and instead relied on fully managed AWS services.
+
+The overall data flow is:
+
+Data Ingestion → Amazon S3 (Raw) → ETL Processing → Curated Data → Parquet Optimization → Athena Queries
+Why this design?
+I chose Amazon S3 because it provides highly durable and scalable storage
+I used AWS Glue to manage metadata and schemas
+I used Amazon Athena to query data directly from S3 without provisioning databases
+I used Terraform to automate infrastructure deployment
+
+This combination allows building a modern data platform with minimal operational overhead.
+
+
+**** Data Lakehouse Layers
+
+To structure the data properly, I implemented a layered architecture.
+
 🔹 Raw Layer
-Stores incoming JSON data
-Immutable and append-only
-Used as the source of truth
-🔹 Curated Layer
-Cleaned and structured data
-Business logic applied
+
+This layer stores the original data in JSON format.
+
+Location: raw/iot_events/
+Purpose: act as the source of truth
+Data is stored as-is, without modification
+🔹 Curated Layer (JSON)
+
+In this layer, I clean and structure the data.
+
+Location: curated/device_health/
+I apply transformations and prepare the data for analysis
 🔹 Optimized Layer (Parquet)
-Columnar format for performance
-Partitioned by:
-device_type
-year
-month
-day
+
+This is the most important layer for analytics.
+
+Location: curated/device_health_parquet/
+Format: Parquet (columnar)
+Partitioning strategy:
+device_type / year / month / day
+Why Parquet?
+Reduces storage size
+Improves query performance
+Minimizes Athena costs
 
 
-🔄 ETL Pipeline
+===> ETL Pipeline
 
-The ETL pipeline transforms raw data into optimized analytical datasets:
+I implemented a Python-based ETL pipeline using Pandas.
 
-Raw JSON → Data Cleaning → Business Logic → Parquet Conversion → Partitioned Storage
-Transformations
-Data validation
-Temperature classification
-Battery status detection
-Maintenance risk scoring
+The transformation flow is:
+
+Raw JSON → Data Cleaning → Feature Engineering → Parquet Conversion → Partitioned Storage
+Transformations I implemented:
+Removed invalid or missing data
+Added temperature_status (normal / critical)
+Added battery_status (normal / low)
+Calculated maintenance_risk based on multiple conditions
+
+This step is important because it transforms raw data into business-ready insights.
 
 
 
-📊 Analytics
+====> Analytics with Athena
 
 
-Amazon Athena is used to query the data directly from S3:
+
+Once the data is stored in Parquet format, I use Athena to query it.
+
+Example query:
 
 SELECT device_id, temperature, battery_status
 FROM iot_lakehouse_db.device_health_parquet
 WHERE device_type = 'industrial_sensor'
 AND year = 2026
 AND month = '04';
+Why Athena?
+No infrastructure to manage
+Pay-per-query model
+Direct integration with S3
 
 
+====> Infrastructure as Code
 
-⚙️ Infrastructure as Code
+I used Terraform to provision all resources.
 
-
-All infrastructure is provisioned using Terraform:
-
-S3 data lake
+Resources created:
+S3 bucket (data lake)
 Glue database and tables
 Athena workgroup
-CloudWatch logs
+CloudWatch log group
+Why Terraform?
+Ensures reproducibility
+Allows version control
+Eliminates manual configuration
+Makes the architecture portable
 
-This ensures:
 
-Reproducibility
-Version control
-Automated deployments
+====> Security Considerations
 
-
-🔐 Security Considerations
-
+Even though this is a serverless project, I considered security aspects:
 
 S3 bucket is private by default
-IAM roles follow least privilege principles
-Data access is controlled through AWS policies
-Architecture can be extended with VPC endpoints for private access
+Access is controlled using IAM roles
+Principle of least privilege is applied
+The architecture can be extended with VPC endpoints for private access
 
 
-💰 Cost Optimization
+====> Cost Optimization
 
-The architecture is designed to minimize cost:
+I designed the solution to stay within AWS Free Tier as much as possible.
 
-Fully serverless (no idle resources)
-Pay-per-query model with Athena
-Partitioning reduces data scanned
-No always-on compute instances
+Key decisions:
 
-
-📈 Scalability & Reliability
-
-Amazon S3 provides virtually unlimited storage
-Athena scales automatically with query demand
-Serverless services ensure high availability
-Data is durably stored across multiple AZs
+Using serverless services (no idle cost)
+Using Parquet to reduce scanned data
+Partitioning to optimize Athena queries
+Avoiding always-on compute resources
 
 
-🌐 Networking (Future Enhancement)
+====> Scalability and Reliability
 
-While not required for serverless services, the architecture can be extended with:
+The architecture is highly scalable:
 
-VPC with private subnets
-S3 VPC endpoints
-Secure data processing environments
+S3 can store unlimited data
+Athena automatically scales with queries
+No manual scaling required
+
+For reliability:
+
+S3 ensures high durability (multi-AZ)
+Serverless services reduce operational risks
 
 
-🔮 Future Improvements
+====> Networking (Future Extension)
+
+Currently, the architecture does not use a VPC because all services are serverless.
+
+However, I planned future improvements:
+
+Deploy ETL inside a private subnet
+Use VPC endpoints for secure S3 access
+Add controlled network boundaries
 
 
-Apache Iceberg (ACID transactions & time travel)
+====> Future Improvements
+
+If I extend this project, I would add:
+
+Apache Iceberg (ACID tables + time travel)
 Real-time ingestion using Kinesis
-Data Mesh architecture
-CI/CD pipeline for automated deployment
-Advanced monitoring and alerting
+Data Mesh architecture (multi-domain)
+CI/CD pipeline for automation
+Monitoring and alerting
 
 
-💼 Resume Description
+====> What I learned
 
-Built a serverless IoT data lakehouse on AWS using Terraform, S3, Glue, and Athena. Designed a multi-layer architecture, implemented ETL pipelines in Python to transform raw JSON into partitioned Parquet datasets, and enabled scalable, cost-efficient analytics.
+Through this project, I gained hands-on experience with:
+
+Designing cloud-native architectures
+Using Infrastructure as Code
+Building ETL pipelines
+Optimizing data storage and queries
+Applying AWS best practices
 
 
+=====> Conclusion
 
-🏁 Conclusion
+This project allowed me to build a complete serverless data platform from scratch.
 
-This project demonstrates how to design a modern cloud-native data platform using AWS best practices, focusing on:
+It demonstrates how to combine:
 
 Scalability
 Cost efficiency
 Simplicity
 Automation
 
-
-## Architecture
-
-```mermaid
-flowchart LR
-    subgraph IaC["Infrastructure as Code"]
-        TF[Terraform]
-    end
-
-    subgraph AWS["AWS Serverless Lakehouse"]
-        S3[(Amazon S3 Data Lake)]
-        GLUE[AWS Glue Data Catalog]
-        ATHENA[Amazon Athena]
-        CW[CloudWatch Logs]
-    end
-
-    subgraph Layers["Data Lakehouse Layers"]
-        RAW[Raw Zone<br/>JSON files]
-        CURATED[Curated Zone<br/>Cleaned data]
-        PARQUET[Optimized Zone<br/>Partitioned Parquet]
-    end
-
-    subgraph ETL["Python ETL Pipeline"]
-        CLEAN[Data Cleaning]
-
-        RULES[Business Rules]
-        FORMAT[Parquet Conversion]
-    end
-
-    TF --> AWS
-
-    S3 --> RAW
-    RAW --> CLEAN
-    CLEAN --> RULES
-    RULES --> FORMAT
-    FORMAT --> PARQUET
-
-    PARQUET --> GLUE
-    GLUE --> ATHENA
-    ATHENA --> INSIGHTS[SQL Analytics]
-
-    AWS --> CW
+to create a modern data solution on AWS.
