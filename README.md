@@ -51,7 +51,9 @@ Battery status detection
 Maintenance risk scoring
 
 
+
 📊 Analytics
+
 
 Amazon Athena is used to query the data directly from S3:
 
@@ -77,6 +79,8 @@ Automated deployments
 
 
 🔐 Security Considerations
+
+
 S3 bucket is private by default
 IAM roles follow least privilege principles
 Data access is controlled through AWS policies
@@ -91,7 +95,10 @@ Fully serverless (no idle resources)
 Pay-per-query model with Athena
 Partitioning reduces data scanned
 No always-on compute instances
+
+
 📈 Scalability & Reliability
+
 Amazon S3 provides virtually unlimited storage
 Athena scales automatically with query demand
 Serverless services ensure high availability
@@ -108,6 +115,8 @@ Secure data processing environments
 
 
 🔮 Future Improvements
+
+
 Apache Iceberg (ACID transactions & time travel)
 Real-time ingestion using Kinesis
 Data Mesh architecture
