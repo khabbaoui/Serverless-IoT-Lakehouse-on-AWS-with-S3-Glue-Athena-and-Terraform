@@ -176,6 +176,25 @@ resource "aws_glue_catalog_table" "device_health_parquet" {
   parameters = {
     classification = "parquet"
   }
+  partition_keys {
+    name = "device_type"
+    type = "string"
+  }
+
+  partition_keys {
+    name = "year"
+    type = "int"
+  }
+
+  partition_keys {
+    name = "month"
+    type = "string"
+  }
+
+  partition_keys {
+    name = "day"
+    type = "string"
+  }
 
   storage_descriptor {
     location      = "s3://${aws_s3_bucket.lakehouse.bucket}/curated/device_health_parquet/"
