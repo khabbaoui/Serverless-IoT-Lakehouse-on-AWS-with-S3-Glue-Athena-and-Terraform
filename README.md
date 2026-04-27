@@ -196,5 +196,5 @@ Simplicity
 Automation
 
 to create a modern data solution on AWS.
+<img width="623" height="646" alt="image" src="https://github.com/user-attachments/assets/b9cdf660-e9f3-4fc9-b36d-57b24f997c01" />
 
-<img width="2834" height="2206" alt="mermaid-diagram" src="https://github.com/user-attachments/assets/24f6c9a0-6fb8-41fb-bbfa-084a66c90bf3" />
