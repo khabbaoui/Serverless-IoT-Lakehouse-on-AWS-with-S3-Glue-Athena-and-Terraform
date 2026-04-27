@@ -53,3 +53,61 @@ resource "aws_cloudwatch_log_group" "lakehouse_logs" {
   name              = "/aws/lakehouse/${var.project_name}"
   retention_in_days = 7
 }
+resource "aws_s3_object" "sample_raw_data" {
+  bucket = aws_s3_bucket.lakehouse.id
+  key    = "raw/iot_events/sample.json"
+
+  content = jsonencode({
+    device_id     = "machine_01"
+    temperature   = 85.5
+    vibration     = 0.72
+    battery_level = 18
+    timestamp     = "2026-04-27T20:00:00Z"
+  })
+}
+
+resource "aws_glue_catalog_table" "iot_raw" {
+  name          = "iot_raw"
+  database_name = aws_glue_catalog_database.lakehouse_db.name
+  table_type    = "EXTERNAL_TABLE"
+
+  parameters = {
+    classification = "json"
+  }
+
+  storage_descriptor {
+    location      = "s3://${aws_s3_bucket.lakehouse.bucket}/raw/iot_events/"
+    input_format  = "org.apache.hadoop.mapred.TextInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
+
+    ser_de_info {
+      name                  = "json-serde"
+      serialization_library = "org.openx.data.jsonserde.JsonSerDe"
+    }
+
+    columns {
+      name = "device_id"
+      type = "string"
+    }
+
+    columns {
+      name = "temperature"
+      type = "double"
+    }
+
+    columns {
+      name = "vibration"
+      type = "double"
+    }
+
+    columns {
+      name = "battery_level"
+      type = "int"
+    }
+
+    columns {
+      name = "timestamp"
+      type = "string"
+    }
+  }
+}
