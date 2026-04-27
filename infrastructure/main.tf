@@ -168,3 +168,58 @@ resource "aws_glue_catalog_table" "device_health" {
     }
   }
 }
+resource "aws_glue_catalog_table" "device_health_parquet" {
+  name          = "device_health_parquet"
+  database_name = aws_glue_catalog_database.lakehouse_db.name
+  table_type    = "EXTERNAL_TABLE"
+
+  parameters = {
+    classification = "parquet"
+  }
+
+  storage_descriptor {
+    location      = "s3://${aws_s3_bucket.lakehouse.bucket}/curated/device_health_parquet/"
+    input_format  = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
+
+    ser_de_info {
+      name                  = "parquet-serde"
+      serialization_library = "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe"
+    }
+
+    columns {
+      name = "device_id"
+      type = "string"
+    }
+
+    columns {
+      name = "temperature"
+      type = "double"
+    }
+
+    columns {
+      name = "vibration"
+      type = "double"
+    }
+
+    columns {
+      name = "battery_level"
+      type = "int"
+    }
+
+    columns {
+      name = "timestamp"
+      type = "string"
+    }
+
+    columns {
+      name = "temperature_status"
+      type = "string"
+    }
+
+    columns {
+      name = "battery_status"
+      type = "string"
+    }
+  }
+}
