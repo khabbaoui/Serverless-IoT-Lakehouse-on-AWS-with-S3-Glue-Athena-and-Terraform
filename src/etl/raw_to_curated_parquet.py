@@ -1,8 +1,11 @@
 import boto3
 import pandas as pd
 from io import BytesIO
+import os
 
-BUCKET = "serverless-iot-lakehouse-7046eef4"
+BUCKET = os.getenv("BUCKET_NAME")
+if not BUCKET:
+    raise ValueError("BUCKET_NAME environment variable is not set")
 
 s3 = boto3.client("s3")
 
@@ -23,7 +26,12 @@ parquet_buffer = BytesIO()
 df.to_parquet(parquet_buffer, index=False)
 
 curated_key = "curated/device_health_parquet/data.parquet"
-
+curated_key = (
+    f"curated/device_health_parquet/"
+    f"device_type={device_type}/"
+    f"year={year}/month={month}/day={day}/"
+    f"data.parquet"
+)
 s3.put_object(
     Bucket=BUCKET,
     Key=curated_key,
