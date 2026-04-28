@@ -23,7 +23,10 @@ I followed a serverless architecture approach, which means I avoided managing in
 The overall data flow is:
 
 Data Ingestion → Amazon S3 (Raw) → ETL Processing → Curated Data → Parquet Optimization → Athena Queries
+
 Why this design?
+
+
 I chose Amazon S3 because it provides highly durable and scalable storage
 I used AWS Glue to manage metadata and schemas
 I used Amazon Athena to query data directly from S3 without provisioning databases
@@ -36,20 +39,20 @@ This combination allows building a modern data platform with minimal operational
 
 To structure the data properly, I implemented a layered architecture.
 
-🔹 Raw Layer
+--- Raw Layer
 
 This layer stores the original data in JSON format.
 
 Location: raw/iot_events/
 Purpose: act as the source of truth
 Data is stored as-is, without modification
-🔹 Curated Layer (JSON)
+--- Curated Layer (JSON)
 
 In this layer, I clean and structure the data.
 
 Location: curated/device_health/
 I apply transformations and prepare the data for analysis
-🔹 Optimized Layer (Parquet)
+--- Optimized Layer (Parquet)
 
 This is the most important layer for analytics.
 
