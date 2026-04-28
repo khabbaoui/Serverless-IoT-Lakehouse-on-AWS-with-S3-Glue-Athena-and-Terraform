@@ -4,3 +4,4 @@
 *.tfvars
 .env
 awscliv2.zip
+infrastructure/*.zip
