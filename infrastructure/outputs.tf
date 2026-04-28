@@ -13,3 +13,6 @@ output "athena_workgroup_name" {
 output "cloudwatch_log_group" {
   value = aws_cloudwatch_log_group.lakehouse_logs.name
 }
+output "athena_results_location" {
+  value = "s3://${aws_s3_bucket.lakehouse.bucket}/athena-results/"
+}
